@@ -14,10 +14,21 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.css$/,
+      test: /\.s?css$/,
       use: [
         {loader: 'style-loader'},
-        {loader: 'css-loader'}
+        // {loader: 'css-loader'} 
+        // Enable css modules
+        {
+          loader: 'css-loader',
+          options: {
+            modules: {
+              localIdentName: '[name]__[local]--[hash:base64:5]'
+            }
+          }
+        },
+        'postcss-loader',
+        'sass-loader'
       ]
     }, {
       test: /\.tsx?$/,

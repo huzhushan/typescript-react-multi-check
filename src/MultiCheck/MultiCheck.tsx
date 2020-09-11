@@ -1,4 +1,4 @@
-import './MultiCheck.css';
+import styles from './MultiCheck.scss';
 
 import React from 'react';
 
@@ -28,8 +28,55 @@ type Props = {
 }
 
 const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
-  return <div className='MultiCheck'>
-    {/* TODO */}
+  return <div className={styles['multi-check']}>
+    <div className={styles['multi-check-label']}>Status</div>
+    <ul className={styles['multi-check-options']}>
+      <li>
+        <label className={styles['checkbox-wrapper']}>
+          <div className={`${styles.checkbox}`}>
+            <input type="checkbox" className={styles['checkbox-input']} />
+            <div className={styles['checkbox-inner']}></div>
+          </div>
+          <div>Select All</div>
+        </label>
+      </li>
+      <li>
+        <label className={styles['checkbox-wrapper']}>
+          <div className={`${styles.checkbox}`}>
+            <input type="checkbox" defaultChecked className={styles['checkbox-input']} />
+            <div className={styles['checkbox-inner']}></div>
+          </div>
+          <div>1111</div>
+        </label>
+      </li>
+      <li>
+        <label className={styles['checkbox-wrapper']}>
+          <div className={`${styles.checkbox}`}>
+            <input type="checkbox" className={styles['checkbox-input']} />
+            <div className={styles['checkbox-inner']}></div>
+          </div>
+          <div>222</div>
+        </label>
+      </li>
+      <li>
+        <label className={styles['checkbox-wrapper']}>
+          <div className={`${styles.checkbox}`}>
+            <input type="checkbox" className={styles['checkbox-input']} />
+            <div className={styles['checkbox-inner']}></div>
+          </div>
+          <div>3333</div>
+        </label>
+      </li>
+      <li>
+        <label className={styles['checkbox-wrapper']}>
+          <div className={`${styles.checkbox}`}>
+            <input type="checkbox" className={styles['checkbox-input']} />
+            <div className={styles['checkbox-inner']}></div>
+          </div>
+          <div>44444</div>
+        </label>
+      </li>
+    </ul>
   </div>
 }
 
