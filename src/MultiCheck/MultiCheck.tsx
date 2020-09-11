@@ -1,6 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import styles from './MultiCheck.scss';
+import SelectAll, {Props as SelectAllPropsType} from '../SelectAll';
+import CheckboxList, {Props as CheckboxListPropsType} from '../CheckboxList'
 
-import React from 'react';
 
 export type Option = {
   label: string,
@@ -28,54 +30,36 @@ type Props = {
 }
 
 const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
+  const {label, options, values, columns, onChange} = props;
+
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+  useEffect(() => {
+    const _selectedOptions = options.filter((option: Option) => values!.includes(option.value));
+    setSelectedOptions(_selectedOptions)
+  }, [])
+  
+  // Callback function when checkbox changes
+  const onUpdateOptions = (): void => {
+
+  }
+
+  const SelectAllProps: SelectAllPropsType = {
+    optionsLength: options.length, 
+    selectedLegth: selectedOptions.length,
+    onChange: onUpdateOptions
+  }
+
+  const CheckboxListProps: CheckboxListPropsType = {
+    options, 
+    selectedOptions,
+    onChange: onUpdateOptions
+  }
+
   return <div className={styles['multi-check']}>
-    <div className={styles['multi-check-label']}>Status</div>
-    <ul className={styles['multi-check-options']}>
-      <li>
-        <label className={styles['checkbox-wrapper']}>
-          <div className={`${styles.checkbox}`}>
-            <input type="checkbox" className={styles['checkbox-input']} />
-            <div className={styles['checkbox-inner']}></div>
-          </div>
-          <div>Select All</div>
-        </label>
-      </li>
-      <li>
-        <label className={styles['checkbox-wrapper']}>
-          <div className={`${styles.checkbox}`}>
-            <input type="checkbox" defaultChecked className={styles['checkbox-input']} />
-            <div className={styles['checkbox-inner']}></div>
-          </div>
-          <div>1111</div>
-        </label>
-      </li>
-      <li>
-        <label className={styles['checkbox-wrapper']}>
-          <div className={`${styles.checkbox}`}>
-            <input type="checkbox" className={styles['checkbox-input']} />
-            <div className={styles['checkbox-inner']}></div>
-          </div>
-          <div>222</div>
-        </label>
-      </li>
-      <li>
-        <label className={styles['checkbox-wrapper']}>
-          <div className={`${styles.checkbox}`}>
-            <input type="checkbox" className={styles['checkbox-input']} />
-            <div className={styles['checkbox-inner']}></div>
-          </div>
-          <div>3333</div>
-        </label>
-      </li>
-      <li>
-        <label className={styles['checkbox-wrapper']}>
-          <div className={`${styles.checkbox}`}>
-            <input type="checkbox" className={styles['checkbox-input']} />
-            <div className={styles['checkbox-inner']}></div>
-          </div>
-          <div>44444</div>
-        </label>
-      </li>
+    <div className={styles['multi-check-label']}>{label}</div>
+    <ul className={styles['multi-check-options']} style={{MozColumnCount: columns, WebkitColumnCount: columns, columnCount: columns}}>
+      <SelectAll {...SelectAllProps} />
+      <CheckboxList {...CheckboxListProps} />
     </ul>
   </div>
 }
