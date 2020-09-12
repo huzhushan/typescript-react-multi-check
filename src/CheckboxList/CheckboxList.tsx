@@ -1,47 +1,61 @@
-import React from 'react';
+import React, {memo} from 'react';
 import CheckboxItem from '../CheckboxItem';
-import {Option} from '../MultiCheck';
+import {Option, CallbackType} from '../MultiCheck';
+import {useEffectCallback} from '../hooks'
 
 
 /**
  * 
  * @param {Option[]} options - options 
- * @param {Option[]} selectedOptions - selected options
  * @param {Function} onChange - when option is changed, 
  *                              it should be passed to outside
  */
 export type Props = {
   options: Option[],
-  selectedOptions?: Option[],
-  onChange: (options: Option[]) => void
+  onChange: (options: CallbackType) => void
 }
 
 const CheckboxList: React.FunctionComponent<Props> = (props): JSX.Element => {
 
-  const {options, selectedOptions, onChange} = props;
+  const {options, onChange} = props;
 
   /**
    * Callback function from CheckboxItem Component 
+   * Update the selected options
    * 
    * @param {Option} option - target option
-   * @param {boolean} checked - is checked
+   * @param {number} checked - is checked
    * 
    */ 
-  const onOptionChange = (option: Option, checked: boolean): void => {
+  const onOptionChange = (option: Option, checked: number): void => {
+    const _options = [...options];
+    const _index = _options.findIndex((item: Option) => item.value === option.value);
     
+    _options.splice(_index, 1, {
+      ...option,
+      checked
+    });
+    
+    onChange(_options);
     
   }
 
   return <>
     { 
       options.map((option: Option) => {
-        const checked = Number(!!selectedOptions!.find((item: Option) => item.value === option.value));
-
+        
         return <li key={option.value}>
-          <CheckboxItem label={option.label} value={option.value} checked={checked} onChange={onOptionChange.bind(null, option)} />
+          <CheckboxItem 
+            label={option.label} 
+            value={option.value} 
+            checked={+!!option.checked} 
+            onChange={useEffectCallback((checked: number) => {
+              onOptionChange(option, checked);
+            }, [option.checked])} 
+          />
         </li>
       })
     }
   </>
 }
-export default CheckboxList
+export default memo(CheckboxList)

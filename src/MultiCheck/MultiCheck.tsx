@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import styles from './MultiCheck.scss';
 import SelectAll, {Props as SelectAllPropsType} from '../SelectAll';
 import CheckboxList, {Props as CheckboxListPropsType} from '../CheckboxList'
 
-
+/**
+ * @param {string} label - Option label
+ * @param {string} value - Option value
+ * @param {number} checked - Option status (0: unchecked、1: checked)
+ */
 export type Option = {
   label: string,
-  value: string
+  value: string,
+  checked?: number
 }
+
+export type CallbackType = Option[] | number;
 
 /**
  * Notice:
@@ -32,34 +39,62 @@ type Props = {
 const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
   const {label, options, values, columns, onChange} = props;
 
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-  useEffect(() => {
-    const _selectedOptions = options.filter((option: Option) => values!.includes(option.value));
-    setSelectedOptions(_selectedOptions)
-  }, [])
+  // Add checked attr for options
+  const [checkboxOptions, setCheckboxOptions] = useState<Option[]>(
+    options.map((option: Option) => ({
+      ...option,
+      checked: values ? +values.includes(option.value) : 0
+    }))
+  );
+
   
-  // Callback function when checkbox changes
-  const onUpdateOptions = (): void => {
+  /**
+   * Callback function When selectedOptions updated or toggle SelectAll
+   *  
+   * @param {Option[] | boolean} params
+   */
+  const onUpdateOptions = (params: CallbackType): void => { 
+    
+    let _checkboxOptions = [];
 
+    if (typeof params !== 'number') {
+      // When toggle single option 
+      _checkboxOptions = params;
+    } else {
+      // When toggle SelectAll
+      _checkboxOptions = params === 1 ? options.map((option: Option) => ({
+        ...option,
+        checked: 1   
+      })) : [...options];
+      
+    }
+
+    setCheckboxOptions(_checkboxOptions);
+    // Pass selectedOptions to outside
+    onChange && onChange(_checkboxOptions.filter((item: Option) => item.checked === 1));
   }
+  
 
-  const SelectAllProps: SelectAllPropsType = {
-    optionsLength: options.length, 
-    selectedLegth: selectedOptions.length,
+  
+  // Pass props to SelectAll Component and CheckboxList Component
+  const ComponentProps: SelectAllPropsType | CheckboxListPropsType = {
+    options: checkboxOptions, 
     onChange: onUpdateOptions
   }
 
-  const CheckboxListProps: CheckboxListPropsType = {
-    options, 
-    selectedOptions,
-    onChange: onUpdateOptions
-  }
 
   return <div className={styles['multi-check']}>
-    <div className={styles['multi-check-label']}>{label}</div>
-    <ul className={styles['multi-check-options']} style={{MozColumnCount: columns, WebkitColumnCount: columns, columnCount: columns}}>
-      <SelectAll {...SelectAllProps} />
-      <CheckboxList {...CheckboxListProps} />
+    <div className={styles['multi-check-label']}>{label || "MultiCheck"}</div>
+    <ul 
+      className={styles['multi-check-options']} 
+      style={{
+        MozColumnCount: columns, 
+        WebkitColumnCount: columns, 
+        columnCount: columns
+      }}
+    >
+      <SelectAll {...ComponentProps} />
+      <CheckboxList {...ComponentProps} />
     </ul>
   </div>
 }

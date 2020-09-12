@@ -1,17 +1,42 @@
-import React from 'react';
+import React, {memo, useCallback} from 'react';
 import CheckboxItem from '../CheckboxItem';
+import {Option, CallbackType} from '../MultiCheck';
 
+/**
+ * @param {Option[]} options - all options
+ * @param {void} onChange - callback function 
+ */
 export type Props = {
-  optionsLength: number,
-  selectedLegth: number,
-  onChange: (boo: boolean) => void
+  options: Option[],
+  onChange: (checked: CallbackType) => void
 }
 
 const SelectAll: React.FunctionComponent<Props> = (props): JSX.Element => {
-  const onSelectAllChange = () => {
+  const {options, onChange} = props;
 
-  }
+  const getChecked = () => {
+    const selectedLength = options.filter((option: Option) => option.checked === 1).length;
+    const optionsLength = options.length;
 
-  return <li><CheckboxItem label="Select All" value="" checked={2} onChange={onSelectAllChange} /></li>
+    if (selectedLength <= 0) {
+      return 0; // Represents unchecked
+    } else if (selectedLength > 0 && selectedLength < optionsLength) {
+      return 2; // Represents half-checked
+    } else {
+      return 1; // Represents checked
+    }
+  };
+
+
+  return <li>
+    <CheckboxItem 
+      label="Select All" 
+      value="" 
+      checked={getChecked()} 
+      onChange={useCallback((checked: number) => {
+        onChange(checked)
+      }, [])} 
+    />
+  </li>
 }
-export default SelectAll
+export default memo(SelectAll)
