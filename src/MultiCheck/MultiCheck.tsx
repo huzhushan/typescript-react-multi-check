@@ -86,7 +86,7 @@ const MultiCheck: React.FunctionComponent<Props> = (props): JSX.Element => {
   return <div className={styles['multi-check']}>
     <div className={styles['multi-check-label']}>{label || "MultiCheck"}</div>
     <ul 
-      className={styles['multi-check-options']} 
+      className={`${styles['multi-check-options']}`} 
       style={{
         MozColumnCount: columns, 
         WebkitColumnCount: columns, 
