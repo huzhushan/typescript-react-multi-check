@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from './MultiCheck.scss';
-import SelectAll, {Props as SelectAllPropsType} from '../SelectAll';
-import CheckboxList, {Props as CheckboxListPropsType} from '../CheckboxList'
+import SelectAll, {Props as SelectAllPropsType} from './SelectAll';
+import CheckboxList, {Props as CheckboxListPropsType} from './CheckboxList'
 
 /**
  * @param {string} label - Option label

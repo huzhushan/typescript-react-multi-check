@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
-import CheckboxItem from '../CheckboxItem';
-import {Option, CallbackType} from '../MultiCheck';
-import {useEffectCallback} from '../hooks'
+import Checkbox from '../../Checkbox';
+import {Option, CallbackType} from '..';
+import {useEffectCallback} from '../../hooks'
 
 
 /**
@@ -20,7 +20,7 @@ const CheckboxList: React.FunctionComponent<Props> = (props): JSX.Element => {
   const {options, onChange} = props;
 
   /**
-   * Callback function from CheckboxItem Component 
+   * Callback function from Checkbox Component 
    * Update the selected options
    * 
    * @param {Option} option - target option
@@ -45,7 +45,7 @@ const CheckboxList: React.FunctionComponent<Props> = (props): JSX.Element => {
       options.map((option: Option) => {
         
         return <li key={option.value}>
-          <CheckboxItem 
+          <Checkbox 
             label={option.label} 
             value={option.value} 
             checked={+!!option.checked} 

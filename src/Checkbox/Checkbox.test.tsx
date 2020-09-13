@@ -1,5 +1,5 @@
 import React from 'react'
-import CheckboxItem from './CheckboxItem'
+import Checkbox from './Checkbox'
 import { shallow, mount } from 'enzyme'
 
 const setup = () => {
@@ -13,7 +13,7 @@ const setup = () => {
   }
 
   // Create Component
-  const wrapper = shallow(<CheckboxItem {...props} />);
+  const wrapper = shallow(<Checkbox {...props} />);
 
   return {
     props,
@@ -21,7 +21,7 @@ const setup = () => {
   }
 }
 
-describe('CheckboxItem', () => {
+describe('Checkbox', () => {
   const { wrapper, props } = setup();
   
 

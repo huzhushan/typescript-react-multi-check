@@ -1,6 +1,6 @@
 import React, {memo, useCallback} from 'react';
-import CheckboxItem from '../CheckboxItem';
-import {Option, CallbackType} from '../MultiCheck';
+import Checkbox from '../../Checkbox';
+import {Option, CallbackType} from '..';
 
 /**
  * @param {Option[]} options - all options
@@ -29,7 +29,7 @@ const SelectAll: React.FunctionComponent<Props> = (props): JSX.Element => {
 
 
   return <li>
-    <CheckboxItem 
+    <Checkbox 
       label="Select All" 
       value="" 
       checked={getChecked()} 

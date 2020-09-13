@@ -1,6 +1,6 @@
 import React from 'react'
 import CheckboxList from './CheckboxList'
-import CheckboxItem from '../CheckboxItem'
+import CheckboxItem from '../../Checkbox'
 import { shallow, mount } from 'enzyme'
 
 describe('CheckboxList', () => {

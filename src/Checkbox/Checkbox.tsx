@@ -1,5 +1,5 @@
 import React, { ChangeEvent, memo } from 'react';
-import styles from './CheckboxItem.scss';
+import styles from './Checkbox.scss';
 import {Option} from '../MultiCheck/MultiCheck'
 
 /**
@@ -21,12 +21,13 @@ export enum STATUS {
  *                              it should be passed to outside
  */
 export type Props = Option & {
-  onChange: (checked: number) => void
+  defaultChecked?: boolean,
+  onChange?: (checked: number) => void
 }
 
 
-const CheckboxItem: React.FunctionComponent<Props> = (props): JSX.Element => {
-  const {label, value, checked = 0, onChange} = props;
+const Checkbox: React.FunctionComponent<Props> = (props): JSX.Element => {
+  const {label, value, checked = 0, defaultChecked, onChange} = props;
 
   /**
    * when checkbox changes:
@@ -36,23 +37,29 @@ const CheckboxItem: React.FunctionComponent<Props> = (props): JSX.Element => {
    * @param {ChangeEvent} event - event
    */
   const onCheckboxChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    onChange(+event.target.checked);
+    onChange && onChange(+event.target.checked);
   }
+
+
+  const checkboxProps = {
+    type: "checkbox",
+    className: styles['checkbox-input'],
+    value,
+    onChange: onCheckboxChange,
+    ...('defaultChecked' in props ? {defaultChecked}: {}),
+    ...('checked' in props ? {checked: checked === 1}: {})
+  }
+
+  
 
 
   return <label className={styles['checkbox-wrapper']}>
     <div className={`${styles.checkbox} ${styles[STATUS[checked]] || ""}`}>
-      <input 
-        type="checkbox" 
-        checked={checked === 1} 
-        className={styles['checkbox-input']} 
-        value={value} 
-        onChange={onCheckboxChange} 
-      />
+      <input {...checkboxProps} />
       <div className={styles['checkbox-inner']}></div>
     </div>
     <div>{label}</div>
   </label>
 }
 
-export default memo(CheckboxItem);
+export default memo(Checkbox);

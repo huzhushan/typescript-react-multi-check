@@ -1,7 +1,7 @@
 import React from 'react'
 import MultiCheck from './MultiCheck'
-import SelectAll from '../SelectAll';
-import CheckboxList from '../CheckboxList'
+import SelectAll from './SelectAll';
+import CheckboxList from './CheckboxList'
 import { shallow, mount } from 'enzyme'
 
 const setup = () => {
