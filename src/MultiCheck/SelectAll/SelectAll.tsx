@@ -1,6 +1,6 @@
-import React, {memo, useCallback} from 'react';
+import React, { memo, useCallback } from 'react';
 import Checkbox from '../../Checkbox';
-import {Option, CallbackType} from '..';
+import { Option } from '..';
 
 /**
  * @param {Option[]} options - all options
@@ -8,34 +8,39 @@ import {Option, CallbackType} from '..';
  */
 export type Props = {
   options: Option[],
-  onChange: (checked: CallbackType) => void
+  onChange: (checked: Option[]) => void
 }
 
 const SelectAll: React.FunctionComponent<Props> = (props): JSX.Element => {
-  const {options, onChange} = props;
+  const { options, onChange } = props;
+  const checked = options.every((option: Option) => !!option.checked);
+  const halfChecked = !checked && options.some((option: Option) => !!option.checked);
 
-  const getChecked = () => {
-    const selectedLength = options.filter((option: Option) => option.checked === 1).length;
-    const optionsLength = options.length;
 
-    if (selectedLength <= 0) {
-      return 0; // Represents unchecked
-    } else if (selectedLength > 0 && selectedLength < optionsLength) {
-      return 2; // Represents half-checked
-    } else {
-      return 1; // Represents checked
-    }
-  };
+  /**
+   * Callback function from Checkbox Component 
+   * Update the selected options
+   * 
+   * @param {boolean} checked - is checked
+   * 
+   */
+  const onToggleSelectAll = (checked: boolean): void => {
+    onChange(options.map((option: Option) => ({
+      ...option,
+      checked
+    })))
+  }
 
 
   return <li>
-    <Checkbox 
-      label="Select All" 
-      value="" 
-      checked={getChecked()} 
-      onChange={useCallback((checked: number) => {
-        onChange(checked)
-      }, [])} 
+    <Checkbox
+      label="Select All"
+      value=""
+      checked={checked}
+      halfChecked={halfChecked}
+      onChange={useCallback((checked: boolean) => {
+        onToggleSelectAll(checked)
+      }, [])}
     />
   </li>
 }

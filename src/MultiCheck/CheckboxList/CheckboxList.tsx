@@ -1,7 +1,7 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react';
 import Checkbox from '../../Checkbox';
-import {Option, CallbackType} from '..';
-import {useEffectCallback} from '../../hooks'
+import { Option } from '..';
+import { useEffectCallback } from '../../hooks'
 
 
 /**
@@ -12,46 +12,42 @@ import {useEffectCallback} from '../../hooks'
  */
 export type Props = {
   options: Option[],
-  onChange: (options: CallbackType) => void
+  onChange: (options: Option[]) => void
 }
 
 const CheckboxList: React.FunctionComponent<Props> = (props): JSX.Element => {
 
-  const {options, onChange} = props;
+  const { options, onChange } = props;
 
   /**
    * Callback function from Checkbox Component 
    * Update the selected options
    * 
    * @param {Option} option - target option
-   * @param {number} checked - is checked
+   * @param {boolean} checked - is checked
    * 
-   */ 
-  const onOptionChange = (option: Option, checked: number): void => {
-    const _options = [...options];
-    const _index = _options.findIndex((item: Option) => item.value === option.value);
-    
-    _options.splice(_index, 1, {
-      ...option,
-      checked
-    });
-    
-    onChange(_options);
-    
+   */
+  const onOptionChange = (option: Option, checked: boolean): void => {
+
+    onChange(options.map((item: Option) => ({
+      ...item,
+      checked: item.value === option.value ? checked : item.checked
+    })));
+
   }
 
   return <>
-    { 
+    {
       options.map((option: Option) => {
-        
+
         return <li key={option.value}>
-          <Checkbox 
-            label={option.label} 
-            value={option.value} 
-            checked={+!!option.checked} 
-            onChange={useEffectCallback((checked: number) => {
+          <Checkbox
+            label={option.label}
+            value={option.value}
+            checked={!!option.checked}
+            onChange={useEffectCallback((checked: boolean) => {
               onOptionChange(option, checked);
-            }, [option.checked])} 
+            }, [option.checked])}
           />
         </li>
       })

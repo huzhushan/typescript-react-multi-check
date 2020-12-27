@@ -29,23 +29,23 @@ describe('SelectAll', () => {
   })
 
   test('when CheckboxItem change, run onChange function', () => {
-    $CheckboxItem.props().onChange(1);
+    $CheckboxItem.props().onChange(true);
     expect(props.onChange).toHaveBeenCalled();
   })
 
-  
+
   test('if all other options are checked, it should be checked', () => {
     const _props = {
       ...props,
       options: options.map(option => ({
         ...option,
-        checked: 1
+        checked: true
       }))
     }
     wrapper = shallow(<SelectAll {..._props} />);
     $CheckboxItem = wrapper.find(CheckboxItem)
 
-    expect($CheckboxItem.props()).toHaveProperty('checked', 1)
+    expect($CheckboxItem.props()).toHaveProperty('checked', true)
   })
 
 
@@ -55,14 +55,14 @@ describe('SelectAll', () => {
       ...props,
       options: options.map((option, index) => ({
         ...option,
-        checked: index === rndIndex ? 0 : 1
+        checked: index === rndIndex ? false : true
       }))
     }
-    
+
     wrapper = shallow(<SelectAll {..._props} />);
     $CheckboxItem = wrapper.find(CheckboxItem)
-    
-    expect($CheckboxItem.props()).not.toHaveProperty('checked', 1)
+
+    expect($CheckboxItem.props()).not.toHaveProperty('checked', true)
   })
 
 

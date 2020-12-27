@@ -31,7 +31,7 @@ describe('CheckboxList', () => {
       ...props,
       options: options.map(option => ({
         ...option,
-        checked: 1
+        checked: true
       }))
     }
     wrapper = shallow(<CheckboxList {..._props} />);
@@ -39,9 +39,9 @@ describe('CheckboxList', () => {
     expect(wrapper.find('input[checked=false]').length).toEqual(0)
   })
 
-  
+
   test('if select all is unchecked, all other options are unchecked', () => {
-    
+
     expect(wrapper.find('input[checked=true]').length).toEqual(0)
   })
 
